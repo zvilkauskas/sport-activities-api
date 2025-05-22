@@ -1,0 +1,93 @@
+networks:
+  laravel:
+
+volumes:
+  mysql-data:
+
+services:
+ # PHP service
+  php:
+    container_name: php
+    build:
+      context: ./docker
+      dockerfile: php.dockerfile
+    volumes:
+      - .:/var/www/html
+    depends_on:
+    - mysql
+    networks:
+      - laravel
+    environment:
+      CONTAINER_ROLE: app
+
+  # Nginx service
+  nginx:
+    container_name: nginx
+    build:
+      context: ./docker
+      dockerfile: nginx.dockerfile
+    ports:
+      - "80:80"
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      - php
+    networks:
+      - laravel
+
+  # Database service
+  mysql:
+    container_name: mysql
+    image: mysql/mysql-server:8.0.25
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: laravel
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - laravel
+
+# Composer service
+  composer:
+    container_name: composer
+    build:
+      context: ./docker
+      dockerfile: php.dockerfile
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      - php
+    entrypoint: [ 'composer' ]
+    networks:
+      - laravel
+
+  npm:
+    container_name: npm
+    image: node:22-alpine
+    volumes:
+      - .:/var/www/html
+    ports:
+      - "3000:3000"
+      - "3001:3001"
+      - "5173:5173"
+    working_dir: /var/www/html
+    entrypoint: [ 'npm' ]
+    networks:
+      - laravel
+
+  artisan:
+    container_name: artisan
+    build:
+      context: ./docker
+      dockerfile: php.dockerfile
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      - mysql
+    entrypoint: [ 'php', '/var/www/html/artisan' ]
+    networks:
+      - laravel
