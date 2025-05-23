@@ -34,7 +34,7 @@ class ActivityTest extends TestCase
                         'city' => $activity->city,
                         'price' => $activity->price,
                         'rating' => $activity->rating,
-                        'start_date' => $activity->start_date->toJson(),
+                        'start_date' => $activity->start_date->format('Y-m-d H:i'),
                     ]
                 ]
             ]);
