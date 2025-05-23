@@ -20,7 +20,7 @@ class ActivityFactory extends Factory
         return [
             'activity_type' => fake()->randomElement(['Acrobatics', 'Athletics' , 'Pilates', 'Dances']),
             'session_type' => fake()->randomElement(['Group', 'Individual', 'Remote']),
-            'name' => fake()->name,
+            'name' => fake()->sentence(3, false),
             'address' => fake()->streetAddress(),
             'city' => fake()->city(),
             'price' => fake()->randomFloat(2, 10, 200),
