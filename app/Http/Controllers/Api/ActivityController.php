@@ -12,4 +12,9 @@ class ActivityController extends Controller
     {
         return Activity::all();
     }
+
+    public function show(Activity $activity)
+    {
+        return $activity;
+    }
 }

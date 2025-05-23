@@ -9,3 +9,4 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::get('activities', [ActivityController::class, 'index']);
+Route::get('activities/{activity}', [ActivityController::class, 'show']);
