@@ -26,12 +26,9 @@ class Activity extends Model
         'longitude',
     ];
 
-    protected function casts(): array
-    {
-        return [
-            'price' => 'decimal:2',
-            'rating' => 'float',
-            'start_date' => 'datetime:Y-m-d H:i',
-        ];
-    }
+    protected $casts = [
+        'price' => 'decimal:2',
+        'rating' => 'float',
+        'start_date' => 'datetime:Y-m-d H:i',
+    ];
 }
