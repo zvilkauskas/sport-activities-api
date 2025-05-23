@@ -50,4 +50,27 @@ class ActivityTest extends TestCase
         $response->assertStatus(200)
             ->assertJsonCount(3, 'data');
     }
+
+    public function test_api_returns_single_activity(): void
+    {
+        $user = User::factory()->create();
+        $activity = Activity::factory()->create();
+
+        $response = $this->actingAs($user)->getJson(route('activities.show', $activity->id));
+
+        $response->assertStatus(200)
+            ->assertJson([
+                'data' => [
+                    'id' => $activity->id,
+                    'activity_type' => $activity->activity_type,
+                    'session_type' => $activity->session_type,
+                    'name' => $activity->name,
+                    'address' => $activity->address,
+                    'city' => $activity->city,
+                    'price' => $activity->price,
+                    'rating' => $activity->rating,
+                    'start_date' => $activity->start_date->toJson(),
+                ]
+            ]);
+    }
 }
