@@ -10,20 +10,22 @@ use App\Http\Resources\Activities\ActivityIndexResource;
 use App\Http\Resources\Activities\ActivityShowResource;
 use App\Models\Activity;
 use App\Services\Api\ActivityService;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class ActivityController extends Controller
 {
     public function __construct(
         private readonly ActivityService $activityService
     ) {}
-    public function index(ActivityFilterRequest $request)
+
+    public function index(ActivityFilterRequest $request): AnonymousResourceCollection
     {
         $activities = $this->activityService->getFilteredActivities($request);
 
         return ActivityIndexResource::collection($activities);
     }
 
-    public function show(Activity $activity)
+    public function show(Activity $activity): ActivityShowResource
     {
         return new ActivityShowResource($activity);
     }
