@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Api\ActivityController;
+use App\Http\Controllers\Api\Activities\ActivityController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
