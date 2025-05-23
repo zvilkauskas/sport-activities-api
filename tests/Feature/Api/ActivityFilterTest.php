@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Api;
 
 use App\Http\Requests\ActivityFilterRequest;
@@ -14,7 +16,7 @@ class ActivityFilterTest extends TestCase
     /**
      * A basic feature test example.
      */
-    public function test_can_filter_by_activity_type()
+    public function test_can_filter_by_activity_type(): void
     {
         Activity::factory()->create(['activity_type' => 'Pilates']);
         Activity::factory()->create(['activity_type' => 'Acrobatics']);
@@ -31,7 +33,7 @@ class ActivityFilterTest extends TestCase
         $this->assertEquals('Acrobatics', $result->first()->activity_type);
     }
 
-    public function test_can_filter_by_session_type()
+    public function test_can_filter_by_session_type(): void
     {
         Activity::factory()->create(['session_type' => 'Remote']);
         Activity::factory()->create(['session_type' => 'Individual']);
@@ -49,7 +51,7 @@ class ActivityFilterTest extends TestCase
         $this->assertEquals('Individual', $result->first()->session_type);
     }
 
-    public function test_can_filter_by_city()
+    public function test_can_filter_by_city(): void
     {
         Activity::factory()->create(['city' => 'Vilnius']);
         Activity::factory()->create(['city' => 'Kaunas']);
@@ -67,7 +69,7 @@ class ActivityFilterTest extends TestCase
         $this->assertEquals('Kaunas', $result->first()->city);
     }
 
-    public function test_can_filter_by_start_date()
+    public function test_can_filter_by_start_date(): void
     {
         Activity::factory()->create(['start_date' => '2025-01-01']);
         Activity::factory()->create(['start_date' => '2025-05-23']);
@@ -85,7 +87,7 @@ class ActivityFilterTest extends TestCase
         $this->assertEquals('2025-11-09', $result->first()->start_date->format('Y-m-d'));
     }
 
-    public function test_can_filter_by_multiple_fields()
+    public function test_can_filter_by_multiple_fields(): void
     {
         Activity::factory()->create([
             'activity_type' => 'Pilates',
@@ -115,7 +117,7 @@ class ActivityFilterTest extends TestCase
         $this->assertEquals('Vilnius', $result->first()->city);
     }
 
-    public function test_can_filter_by_all_fields()
+    public function test_can_filter_by_all_fields(): void
     {
         Activity::factory()->create([
             'activity_type' => 'Pilates',
@@ -163,7 +165,7 @@ class ActivityFilterTest extends TestCase
         $this->assertEquals('2025-01-01', $result->first()->start_date->format('Y-m-d'));
     }
 
-    public function test_returns_empty_when_no_activity_found()
+    public function test_returns_empty_when_no_activity_found(): void
     {
         Activity::factory()->create(['city' => 'Vilnius']);
 
