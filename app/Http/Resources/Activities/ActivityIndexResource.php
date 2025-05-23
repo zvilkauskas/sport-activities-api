@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Resources\Activities;
 
 use Illuminate\Http\Request;
@@ -23,7 +25,7 @@ class ActivityIndexResource extends JsonResource
             'city' => $this->city,
             'price' => $this->price,
             'rating' => $this->rating,
-            'start_date' => $this->start_date,
+            'start_date' => $this->start_date->format('Y-m-d H:i'),
             'latitude' => $this->latitude,
             'longitude' => $this->longitude,
         ];
