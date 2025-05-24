@@ -28,7 +28,8 @@ class ActivityService
         }
 
         if ($request->has('start_date')) {
-            $query->whereDate('start_date', Carbon::parse($request->start_date));
+            $date = Carbon::createFromFormat('Y-m-d', $request->start_date);
+            $query->whereDate('start_date', $date);
         }
 
         return $query->get();

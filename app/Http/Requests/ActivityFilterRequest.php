@@ -28,7 +28,7 @@ class ActivityFilterRequest extends FormRequest
             'activity_type' => ['sometimes', 'string'],
             'session_type' => ['sometimes', 'string'],
             'city' => ['sometimes', 'string'],
-            'start_date' => ['sometimes', 'date'],
+            'start_date' => ['sometimes', 'date', 'date_format:Y-m-d'],
         ];
     }
 }
