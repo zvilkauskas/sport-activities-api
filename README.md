@@ -1,60 +1,129 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+## Sportinių veiklų API 
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Užduotis:
+Sistemoje laikome informaciją apie įvairiausias sportines veiklas. Kiekviena veikla turi
+savo pavadinimą bei yra mokama. Tikslas yra atvaizduoti šias veiklas žemėlapyje. Reikia
+sukurti 1 endpoint‘ą, kurį frontender‘is galėtų iškviesti ir su gauta informacija tas veiklas
+atvaizduotų. Į endpoint‘ą galima paduoti filtro kriterijus, pagal kuriuos informacija turėtų
+būti prafiltruota.
 
-## About Laravel
+Savo nuožiūra sukurkite duomenų struktūrą apie saugomas veiklas bei kokią
+informaciją grąžinsite.
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Duomenų struktūra:
+Naudojau MySQL duomenų bazę.
+1. Identifikacija:
+   - `id` - automatiškai didėjantis pirminis raktas
+2. Veiklos informacija:
+   - `activity_type` (string) - tipas
+   - `session_type` (string) - rūšis
+   - `name` (string) - pavadinimas
+3. Lokacijos info:
+   - `address` (string) - adresas
+   - `city` (string) - miestas
+   - `latitude` (decimal(10, 8)) - platumos koordinatės žemėlapiui
+   - `longitude` (decimal(10, 8)) - ilgumos koordinatės žemėlapiui
+4. Kaina ir reitingas:
+   - `price` (decimal(8, 2)) - kaina su centais
+   - `rating` (decimal(2, 1)) - reitingas su vienu skaičium po kablelio
+5. Laiko žymos:
+   - `start_date` (dateTime) - veiklos pradžia (data ir laikas)
+   - `timestamps` automatiškai sukuriami `created_at` ir `updated_at` laukeliai
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+---
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Projekto paleidimas
 
-## Learning Laravel
+Sekite šiuos žingsnius:
+1. Klonuokite github repozitoriją:
+   ```bash
+    git clone git@github.com:zvilkauskas/sport-activities-api.git
+    ```
+2. Eikite į naujai sukurtą direktorija:
+   ```bash
+    cd sport-activities-api
+   ```
+3. Sukurkite naują ``.env`` failą projekto direktorijoje:
+   ```bash
+    cp .env.example .env
+    ```
+4. Sukurkite Docker konteinerius:
+    ```bash
+    docker compose build
+    ```
+5. Paleiskite konteinerius:
+    ```bash
+    docker compose up -d
+    ```
+6. Įrašykite composer:
+    ```bash
+    docker compose run --rm composer install
+    ```
+7. Įrašykite npm:
+    ```bash
+    docker compose run --rm npm install
+    ```
+8. Paleiskite npm:
+    ```bash
+    docker compose run --rm npm run build
+    ```
+9. Sugeneruokite application key:
+    ```bash
+    docker compose run --rm artisan key:generate
+    ```
+10. Paleiskite migracijas ir seeder'į:
+    ```bash
+    docker compose run --rm artisan migrate --seed
+    ```
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Naršyklėje rasite duomenis frontender'iui:
+1. Atsidarykite naršyklę ir suveskite: http://localhost/api/activities
+2. Vieno įrašo peržiūrai: http://localhost/api/activities/5
+3. Taip pat galite apsilankyti http://localhost/docs
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+---
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## API Filtrai
 
-## Laravel Sponsors
+API palaiko kelis filtravimo parametrus, kuriuos galima naudoti atskirai arba kartu:
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+1. **activity_type** - veiklos tipo filtras
+    - Galimos reikšmės: "Pilates", "Acrobatics" ir kt.
+    - Pavyzdys: `/api/activities?activity_type=Pilates`
 
-### Premium Partners
+2. **session_type** - užsiėmimo tipo filtras
+    - Galimos reikšmės:
+        - "Remote" (nuotolinis)
+        - "Individual" (individualus)
+        - "Group" (grupinis)
+    - Pavyzdys: `/api/activities?session_type=Group`
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+3. **city** - miesto filtras
+    - Galimos reikšmės: "Vilnius", "Kaunas", "Alytus" ir kt.
+    - Pavyzdys: `/api/activities?city=Vilnius`
 
-## Contributing
+4. **start_date** - datos filtras
+    - Formatas: YYYY-MM-DD
+    - Pavyzdys: `/api/activities?start_date=2025-01-01`
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Galima naudoti kelių filtrų kombinaciją, pvz:
+```
+/api/activities?activity_type=Pilates&session_type=Group&city=Vilnius&start_date=2025-01-01
+```
 
-## Code of Conduct
+Jei nėra rasta veiklų pagal nurodytus filtrus, grąžinamas tuščias masyvas.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+---
 
-## Security Vulnerabilities
+## Testai
+Parašiau keletą testų. Juos paleisti galite naudodami:
+```bash 
+  docker compose run --rm artisan test
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+---
 
 ## License
 
