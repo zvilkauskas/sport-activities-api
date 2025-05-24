@@ -35,12 +35,13 @@ Naudojau MySQL duomenų bazę.
 
 ## Projekto paleidimas
 
+Projektui naudojau Docker konteinerius.
 Sekite šiuos žingsnius:
 1. Klonuokite github repozitoriją:
    ```bash
     git clone git@github.com:zvilkauskas/sport-activities-api.git
     ```
-2. Eikite į naujai sukurtą direktorija:
+2. Eikite į naujai sukurtą direktoriją:
    ```bash
     cd sport-activities-api
    ```
@@ -120,7 +121,7 @@ Jei nėra rasta veiklų pagal nurodytus filtrus, grąžinamas tuščias masyvas.
 ## Testai
 Parašiau keletą testų. Juos paleisti galite naudodami:
 ```bash 
-  docker compose run --rm artisan test
+   docker compose run --rm artisan test
 ```
 
 ---
