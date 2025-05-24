@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Resources\Activities;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -25,7 +26,7 @@ class ActivityShowResource extends JsonResource
             'city' => $this->city,
             'price' => $this->price,
             'rating' => $this->rating,
-            'start_date' => $this->start_date,
+            'start_date' => Carbon::parse($this->start_date)->format('Y-m-d H:i'),
             'latitude' => $this->latitude,
             'longitude' => $this->longitude,
         ];

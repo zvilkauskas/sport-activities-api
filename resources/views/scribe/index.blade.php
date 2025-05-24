@@ -240,7 +240,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <p>
 </p>
 
-<p>Getting the list of the activities</p>
+<p>Get a list of available activities. You can optionally filter results by activity type, session type, city, and start date.</p>
 
 <span id="example-requests-GETapi-activities">
 <blockquote>Example request:</blockquote>
@@ -248,14 +248,14 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost/api/activities?activity_type=Acrobatics&amp;session_type=Individual&amp;city=Vilnius&amp;start_date=2025-06-01" \
+    --get "http://localhost/api/activities?activity_type=Dances&amp;session_type=Group&amp;city=Vilnius&amp;start_date=2024-03-21" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
     \"activity_type\": \"architecto\",
     \"session_type\": \"architecto\",
     \"city\": \"architecto\",
-    \"start_date\": \"2025-05-24T11:15:10\"
+    \"start_date\": \"2025-05-24\"
 }"
 </code></pre></div>
 
@@ -266,10 +266,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
 );
 
 const params = {
-    "activity_type": "Acrobatics",
-    "session_type": "Individual",
+    "activity_type": "Dances",
+    "session_type": "Group",
     "city": "Vilnius",
-    "start_date": "2025-06-01",
+    "start_date": "2024-03-21",
 };
 Object.keys(params)
     .forEach(key =&gt; url.searchParams.append(key, params[key]));
@@ -283,7 +283,7 @@ let body = {
     "activity_type": "architecto",
     "session_type": "architecto",
     "city": "architecto",
-    "start_date": "2025-05-24T11:15:10"
+    "start_date": "2025-05-24"
 };
 
 fetch(url, {
@@ -296,19 +296,26 @@ fetch(url, {
 
 <span id="example-responses-GETapi-activities">
             <blockquote>
-            <p>Example response (200):</p>
+            <p>Example response (200, success):</p>
         </blockquote>
-                <details class="annotation">
-            <summary style="cursor: pointer;">
-                <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
-            </summary>
-            <pre><code class="language-http">cache-control: no-cache, private
-content-type: application/json
-access-control-allow-origin: *
- </code></pre></details>         <pre>
+                <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;data&quot;: []
+    &quot;data&quot;: [
+        {
+            &quot;id&quot;: 1,
+            &quot;activity_type&quot;: &quot;Dances&quot;,
+            &quot;session_type&quot;: &quot;Group&quot;,
+            &quot;name&quot;: &quot;&Scaron;okiai kam per 50&quot;,
+            &quot;address&quot;: &quot;Gedimino pr. 99&quot;,
+            &quot;city&quot;: &quot;Vilnius&quot;,
+            &quot;price&quot;: &quot;25.00&quot;,
+            &quot;rating&quot;: 4.5,
+            &quot;start_date&quot;: &quot;2024-03-21 18:00&quot;,
+            &quot;latitude&quot;: &quot;54.68733700&quot;,
+            &quot;longitude&quot;: &quot;25.27941500&quot;
+        }
+    ]
 }</code>
  </pre>
     </span>
@@ -388,10 +395,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <i>optional</i> &nbsp;
                 <input type="text" style="display: none"
                               name="activity_type"                data-endpoint="GETapi-activities"
-               value="Acrobatics"
+               value="Dances"
                data-component="query">
     <br>
-<p>Optional. Filter by activity type. Example: <code>Acrobatics</code></p>
+<p>Filter by activity type (Acrobatics, Athletics, Pilates, Dances). Example: <code>Dances</code></p>
             </div>
                                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>session_type</code></b>&nbsp;&nbsp;
@@ -399,10 +406,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <i>optional</i> &nbsp;
                 <input type="text" style="display: none"
                               name="session_type"                data-endpoint="GETapi-activities"
-               value="Individual"
+               value="Group"
                data-component="query">
     <br>
-<p>Optional. Filter by session type. Example: <code>Individual</code></p>
+<p>Filter by session type (Group, Individual, Remote). Example: <code>Group</code></p>
             </div>
                                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>city</code></b>&nbsp;&nbsp;
@@ -413,7 +420,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value="Vilnius"
                data-component="query">
     <br>
-<p>Optional. Filter by city. Example: <code>Vilnius</code></p>
+<p>Filter activities by city name. Example: <code>Vilnius</code></p>
             </div>
                                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>start_date</code></b>&nbsp;&nbsp;
@@ -421,10 +428,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <i>optional</i> &nbsp;
                 <input type="text" style="display: none"
                               name="start_date"                data-endpoint="GETapi-activities"
-               value="2025-06-01"
+               value="2024-03-21"
                data-component="query">
     <br>
-<p>date Optional. Filter by start date. Format: YYYY-MM-DD. Example: <code>2025-06-01</code></p>
+<p>date Filter activities by start date (Y-m-d format). Example: <code>2024-03-21</code></p>
             </div>
                         <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
         <div style=" padding-left: 28px;  clear: unset;">
@@ -466,14 +473,44 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <i>optional</i> &nbsp;
                 <input type="text" style="display: none"
                               name="start_date"                data-endpoint="GETapi-activities"
-               value="2025-05-24T11:15:10"
+               value="2025-05-24"
                data-component="body">
     <br>
-<p>Must be a valid date. Example: <code>2025-05-24T11:15:10</code></p>
+<p>Must be a valid date. Must be a valid date in the format <code>Y-m-d</code>. Example: <code>2025-05-24</code></p>
         </div>
         </form>
 
-                    <h2 id="endpoints-GETapi-activities--id-">Get specific activity</h2>
+    <h3>Response</h3>
+    <h4 class="fancy-heading-panel"><b>Response Fields</b></h4>
+    <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>id</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+ &nbsp;
+<br>
+<p>The ID of the activity.</p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>activity_type</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+<br>
+<p>The type of the activity.</p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>session_type</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+<br>
+<p>The type of the session (Group/Individual).</p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>name</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+<br>
+<p>The name of the activity.</p>
+        </div>
+                        <h2 id="endpoints-GETapi-activities--id-">Get specific activity</h2>
 
 <p>
 </p>
@@ -531,7 +568,7 @@ access-control-allow-origin: *
         &quot;city&quot;: &quot;Reillyshire&quot;,
         &quot;price&quot;: &quot;193.11&quot;,
         &quot;rating&quot;: 3,
-        &quot;start_date&quot;: &quot;2025-06-26T10:48:22.000000Z&quot;,
+        &quot;start_date&quot;: &quot;2025-06-26 10:48&quot;,
         &quot;latitude&quot;: &quot;54.73437600&quot;,
         &quot;longitude&quot;: &quot;25.27314900&quot;
     }
