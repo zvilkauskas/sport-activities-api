@@ -18,6 +18,17 @@ class ActivityController extends Controller
         private readonly ActivityService $activityService
     ) {}
 
+    /**
+     * Get Activities
+     *
+     * Getting the list of the activities
+     *
+     * @queryParam activity_type string Optional. Filter by activity type. Example: Acrobatics
+     * @queryParam session_type string Optional. Filter by session type. Example: Individual
+     * @queryParam city string Optional. Filter by city. Example: Vilnius
+     * @queryParam start_date date Optional. Filter by start date. Format: YYYY-MM-DD. Example: 2025-06-01
+     *
+     */
     public function index(ActivityFilterRequest $request): AnonymousResourceCollection
     {
         $activities = $this->activityService->getFilteredActivities($request);
@@ -25,6 +36,11 @@ class ActivityController extends Controller
         return ActivityIndexResource::collection($activities);
     }
 
+    /**
+     * Get specific activity
+     *
+     * Getting the specific activity
+     */
     public function show(Activity $activity): ActivityShowResource
     {
         return new ActivityShowResource($activity);
